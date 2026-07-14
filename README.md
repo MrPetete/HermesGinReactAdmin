@@ -27,7 +27,7 @@ The frontend is **React 18 + TypeScript + Vite + Ant Design ProComponents**.
 
 ```
 ai-admin/
-├── server/        # Gin API (Go)
+├── backend/       # Gin API (Go)
 │   ├── config/        # YAML + env config loader
 │   ├── model/         # User (bcrypt, RBAC) + Document
 │   ├── internal/
@@ -39,7 +39,7 @@ ai-admin/
 │   │   └── router/    # all routes + CORS
 │   ├── main.go
 │   └── config.yaml
-└── web/           # React SPA (Vite + TS + Ant Design)
+└── frontend/      # React SPA (Vite + TS + Ant Design)
     └── src/
         ├── api/        # axios client + endpoints
         ├── context/    # AuthProvider
@@ -56,13 +56,13 @@ ai-admin/
 
 ```bash
 # 1. build the Linux binary (CGO off — pure-Go sqlite, no gcc)
-cd server
+cd backend
 export CGO_ENABLED=0
 GOOS=linux GOARCH=amd64 go build -o bin/server-linux .
 
 # 2. run inside WSL (DB on D: via the /mnt/d mount)
-wsl -d Ubuntu -e bash -c "cd /mnt/d/ai-admin/server && \
-  DB_DSN=/mnt/d/ai-admin/server/data/app.db ./bin/server-linux"
+wsl -d Ubuntu -e bash -c "cd /mnt/d/ai-admin/backend && \
+  DB_DSN=/mnt/d/ai-admin/backend/data/app.db ./bin/server-linux"
 ```
 
 Backend listens on `http://localhost:8080`. Default admin: **admin / admin123**.
@@ -72,7 +72,7 @@ Backend listens on `http://localhost:8080`. Default admin: **admin / admin123**.
 ### Frontend
 
 ```bash
-cd web
+cd frontend
 npm install
 npm run dev          # Vite dev server on :3000, proxies /api -> :8080
 npm test             # Vitest + RTL: 8 tests (api shape + login auth flow), no network
@@ -82,7 +82,7 @@ npm run build        # tsc -b && vite build -> dist/
 Open http://localhost:3000 and sign in.
 
 > **Windows + WSL note:** the Go binary runs inside WSL2, whose network is isolated from
-> Windows. Point the Vite proxy at the WSL IP (`VITE_API_HOST=<wsl-ip>` in `web/vite.config.ts`),
+> Windows. Point the Vite proxy at the WSL IP (`VITE_API_HOST=<wsl-ip>` in `frontend/vite.config.ts`),
 > or just run both natively on the same host. Frontend logic is covered by `npm test`
 > (mocked axios), so the UI contract is verified without needing the live backend.
 

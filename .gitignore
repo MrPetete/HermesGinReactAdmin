@@ -8,8 +8,8 @@ web/dist/
 
 # Binaries / compiled
 *.exe
-bin/server-linux
 server/bin/
+backend/bin/
 data/
 
 # Runtime / logs
