@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Input, Button, List, Tag, Space, Typography, Avatar, Empty } from 'antd'
 import { SearchOutlined } from '@ant-design/icons'
 import { tokens } from '../../theme/tokens'
-import { searchHits, type SearchHit } from '../../mock/ai'
+import { aiApi } from '../../api'
 import GlassCard from '../../components/ui/GlassCard'
 import SectionTitle from '../../components/ui/SectionTitle'
 import FadeUp from '../../components/ui/FadeUp'
@@ -12,20 +12,33 @@ const { Text, Paragraph } = Typography
 
 export default function SmartSearchPage() {
   const [q, setQ] = useState('')
-  const [hits, setHits] = useState<SearchHit[]>([])
+  const [answer, setAnswer] = useState('')
+  const [results, setResults] = useState<{ id: number; title: string; summary: string }[]>([])
+  const [busy, setBusy] = useState(false)
   const [done, setDone] = useState(false)
 
-  const run = () => {
-    if (!q.trim()) return
-    // mock retrieval over the fixtures
-    setHits(searchHits)
-    setDone(true)
+  const run = async () => {
+    if (!q.trim() || busy) return
+    setBusy(true)
+    setDone(false)
+    try {
+      const res = await aiApi.search(q.trim())
+      setAnswer(res.answer)
+      setResults(res.results)
+      setDone(true)
+    } catch (e: any) {
+      setAnswer(`出错：${e?.message || '请求失败'}`)
+      setResults([])
+      setDone(true)
+    } finally {
+      setBusy(false)
+    }
   }
 
   return (
     <PageContainer>
       <FadeUp>
-        <SectionTitle title="智能搜索" subtitle="向量召回 + 生成式摘要（mock）" />
+        <SectionTitle title="智能搜索" subtitle="向量召回 + 生成式摘要（后端 AI 服务）" />
       </FadeUp>
       <FadeUp delay={80}>
         <Space.Compact style={{ width: '100%', maxWidth: 640 }}>
@@ -37,23 +50,26 @@ export default function SmartSearchPage() {
             placeholder="搜索文档、用户、权限…"
             style={{ background: 'rgba(10,20,38,0.6)', borderColor: tokens.color.border, color: tokens.color.text }}
           />
-          <Button type="primary" onClick={run}>搜索</Button>
+          <Button type="primary" onClick={run} loading={busy}>搜索</Button>
         </Space.Compact>
 
         <div style={{ marginTop: 16 }}>
           {done ? (
-            <List
-              dataSource={hits}
-              renderItem={(h) => (
-                <GlassCard lift style={{ marginBottom: 12 }}>
-                  <Space style={{ justifyContent: 'space-between', width: '100%' }}>
+            <>
+              <GlassCard lift style={{ marginBottom: 12 }}>
+                <Text strong style={{ color: tokens.color.text }}>综合答案</Text>
+                <Paragraph style={{ color: tokens.color.textSecondary, margin: '8px 0 0', whiteSpace: 'pre-line' }}>{answer}</Paragraph>
+              </GlassCard>
+              <List
+                dataSource={results}
+                renderItem={(h) => (
+                  <GlassCard lift style={{ marginBottom: 12 }}>
                     <Text strong style={{ color: tokens.color.text }}>{h.title}</Text>
-                    <Tag color="cyan">相关度 {(h.score * 100).toFixed(0)}%</Tag>
-                  </Space>
-                  <Paragraph style={{ color: tokens.color.textSecondary, margin: '8px 0 0' }}>{h.excerpt}</Paragraph>
-                </GlassCard>
-              )}
-            />
+                    <Paragraph style={{ color: tokens.color.textSecondary, margin: '8px 0 0' }}>{h.summary}</Paragraph>
+                  </GlassCard>
+                )}
+              />
+            </>
           ) : (
             <Empty description={<Text style={{ color: tokens.color.textTertiary }}>输入关键词开始检索</Text>} />
           )}

@@ -1,9 +1,9 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Backend runs inside WSL2. Windows-side 127.0.0.1 does NOT reach the WSL guest,
-// so proxy to the WSL IP. Override with env VITE_API_HOST if your WSL IP changes.
-const apiHost = process.env.VITE_API_HOST || '172.26.236.191'
+// Backend runs as a native Windows process on localhost:8080 (pure-Go sqlite, no WSL).
+// Override with env VITE_API_HOST if you move it elsewhere.
+const apiHost = process.env.VITE_API_HOST || '127.0.0.1'
 
 export default defineConfig({
   plugins: [react()],

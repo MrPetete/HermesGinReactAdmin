@@ -6,11 +6,11 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 
-	"server/config"
-	"server/internal/ai"
-	"server/internal/controller"
-	"server/internal/middleware"
-	"server/model"
+	"backend/config"
+	"backend/internal/ai"
+	"backend/internal/controller"
+	"backend/internal/middleware"
+	"backend/model"
 )
 
 // Setup builds the Gin engine with all routes wired.

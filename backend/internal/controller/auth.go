@@ -5,11 +5,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"server/config"
-	"server/internal/database"
-	"server/internal/middleware"
-	"server/internal/response"
-	"server/model"
+	"backend/config"
+	"backend/internal/database"
+	"backend/internal/middleware"
+	"backend/internal/response"
+	"backend/model"
 )
 
 type AuthController struct {

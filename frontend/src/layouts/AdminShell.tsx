@@ -119,7 +119,15 @@ export default function AdminShell({ children }: { children: React.ReactNode }) 
             <Badge count={3} size="small" color={tokens.color.jade}>
               <BellOutlined style={{ fontSize: 18, color: tokens.color.text }} />
             </Badge>
-            <Dropdown menu={{ items: [{ key: 'logout', icon: <LogoutOutlined />, label: '退出登录' }] }}>
+            <Dropdown
+              menu={{
+                items: [{ key: 'logout', icon: <LogoutOutlined />, label: '退出登录' }],
+                onClick: () => {
+                  localStorage.removeItem('ruyi_token')
+                  nav('/login')
+                },
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
                 <Avatar size={32} style={{ background: tokens.color.jade, color: tokens.color.canvas, fontWeight: 700 }}>
                   如

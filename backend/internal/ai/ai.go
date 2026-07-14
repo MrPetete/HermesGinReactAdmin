@@ -11,8 +11,8 @@ import (
 	"strings"
 	"time"
 
-	"server/config"
-	"server/model"
+	"backend/config"
+	"backend/model"
 )
 
 // Provider is the AI backend abstraction. Implementations: mock, openai.

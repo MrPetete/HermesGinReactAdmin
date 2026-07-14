@@ -2,37 +2,44 @@ import { useState } from 'react'
 import { Input, Button, Avatar, Space, Typography, Spin } from 'antd'
 import { RobotOutlined, SendOutlined, UserOutlined } from '@ant-design/icons'
 import { tokens } from '../../theme/tokens'
-import { seedChat, type ChatMsg } from '../../mock/ai'
+import { aiApi } from '../../api'
+import { useAuth } from '../../context/AuthContext'
 import SectionTitle from '../../components/ui/SectionTitle'
 import FadeUp from '../../components/ui/FadeUp'
 import PageContainer from '../../components/common/PageContainer'
 
 const { Text } = Typography
 
+interface Msg { role: 'user' | 'ai'; content: string }
+
 export default function AiChatPage() {
-  const [msgs, setMsgs] = useState<ChatMsg[]>(seedChat)
+  const { user } = useAuth()
+  const [msgs, setMsgs] = useState<Msg[]>([
+    { role: 'ai', content: '你好，我是如意 AI 助手。可以问我关于运营、文档或权限的任何问题。' },
+  ])
   const [input, setInput] = useState('')
   const [busy, setBusy] = useState(false)
 
-  const send = () => {
+  const send = async () => {
     const q = input.trim()
-    if (!q) return
+    if (!q || busy) return
     setMsgs((m) => [...m, { role: 'user', content: q }])
     setInput('')
     setBusy(true)
-    setTimeout(() => {
-      setMsgs((m) => [
-        ...m,
-        { role: 'ai', content: `已收到：「${q}」。这是 mock 回复——接入真实 LLM 后此处将返回生成式答案。` },
-      ])
+    try {
+      const { answer } = await aiApi.chat([{ role: 'user', content: q }])
+      setMsgs((m) => [...m, { role: 'ai', content: answer }])
+    } catch (e: any) {
+      setMsgs((m) => [...m, { role: 'ai', content: `出错：${e?.message || '请求失败'}` }])
+    } finally {
       setBusy(false)
-    }, 700)
+    }
   }
 
   return (
     <PageContainer>
       <FadeUp>
-        <SectionTitle title="AI 助手" subtitle="如意生成式对话（mock）" />
+        <SectionTitle title="AI 助手" subtitle="如意生成式对话（后端 AI 服务）" />
       </FadeUp>
       <FadeUp delay={80}>
         <div className="ruyi-glass" style={{ borderRadius: tokens.radius.md, padding: 16, minHeight: 420, display: 'flex', flexDirection: 'column' }}>
@@ -47,6 +54,7 @@ export default function AiChatPage() {
                     padding: '10px 14px',
                     borderRadius: 12,
                     color: tokens.color.text,
+                    whiteSpace: 'pre-line',
                     background: m.role === 'user' ? 'rgba(47,111,176,0.35)' : tokens.glass.bg,
                   }}
                 >

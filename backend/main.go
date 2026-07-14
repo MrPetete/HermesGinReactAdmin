@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"server/config"
-	"server/internal/database"
-	"server/internal/router"
+	"backend/config"
+	"backend/internal/database"
+	"backend/internal/router"
 )
 
 func main() {

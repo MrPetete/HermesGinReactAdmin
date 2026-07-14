@@ -8,8 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 
-	"server/config"
-	"server/model"
+	"backend/config"
+	"backend/model"
 )
 
 // Claims is the JWT payload.

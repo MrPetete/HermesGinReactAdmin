@@ -11,8 +11,8 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 
-	"server/config"
-	"server/model"
+	"backend/config"
+	"backend/model"
 )
 
 // DB is the shared GORM handle.

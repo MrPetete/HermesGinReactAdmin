@@ -5,10 +5,10 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	"server/internal/database"
-	"server/internal/middleware"
-	"server/internal/response"
-	"server/model"
+	"backend/internal/database"
+	"backend/internal/middleware"
+	"backend/internal/response"
+	"backend/model"
 )
 
 // UserController handles user/account management (admin only).

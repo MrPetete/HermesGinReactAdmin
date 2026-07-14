@@ -3,10 +3,10 @@ package controller
 import (
 	"github.com/gin-gonic/gin"
 
-	"server/internal/ai"
-	"server/internal/database"
-	"server/internal/response"
-	"server/model"
+	"backend/internal/ai"
+	"backend/internal/database"
+	"backend/internal/response"
+	"backend/model"
 )
 
 // DashboardController serves aggregate analytics for the admin home page.
