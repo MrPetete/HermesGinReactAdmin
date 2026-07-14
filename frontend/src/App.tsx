@@ -1,13 +1,13 @@
 import { ConfigProvider, App as AntApp } from 'antd'
 import zhCN from 'antd/locale/zh_CN'
-import { ruyiTechBlue } from './theme'
-import Dashboard from './pages/Dashboard'
+import { ruyiTheme } from './theme/theme'
+import AppRouter from './router'
 
 export default function App() {
   return (
-    <ConfigProvider theme={ruyiTechBlue} locale={zhCN}>
+    <ConfigProvider theme={ruyiTheme} locale={zhCN}>
       <AntApp>
-        <Dashboard />
+        <AppRouter />
       </AntApp>
     </ConfigProvider>
   )

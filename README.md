@@ -39,13 +39,17 @@ ai-admin/
 │   │   └── router/    # all routes + CORS
 │   ├── main.go
 │   └── config.yaml
-└── frontend/      # React SPA (Vite + TS + Ant Design)
+└── frontend/      # React SPA (Vite + TS + Ant Design) — 如意 Chinese-style Tech Blue
     └── src/
-        ├── api/        # axios client + endpoints
-        ├── context/    # AuthProvider
-        ├── layout/     # MainLayout (sider menu)
-        └── pages/      # Login, Dashboard, Users, Documents, AiChat, SmartSearch
+        ├── theme/        # tokens.ts (single source of truth) + theme.ts (AntD) + global.css (aurora/glass/motion)
+        ├── components/   # reusable kit: ui/ (GlassCard, StatTile, SectionTitle, FadeUp), charts/ (TrendBars), common/ (AuroraBackground, PageContainer)
+        ├── layouts/      # AdminShell (fixed 56px top bar + 220px sidebar + scrollable 100vh main)
+        ├── pages/        # feature modules: Dashboard/ Users/ Documents/ AiChat/ SmartSearch/ Settings/ (each index.tsx + mock)
+        ├── hooks/        # useMock (single data seam — swap for real API later)
+        ├── mock/         # per-feature fixtures (dashboard/users/documents/ai)
+        └── router.tsx    # central route table
 ```
+See `frontend/CLONE_AND_CUSTOMIZE.md` for how to copy this into a new branded admin.
 
 ## Quick start (local dev)
 
