@@ -1,0 +1,25 @@
+server:
+  port: "8080"
+  mode: "debug"   # debug | release
+
+database:
+  driver: "sqlite"            # sqlite | postgres
+  dsn: "data/app.db"          # sqlite file path (relative to run dir) or postgres DSN; override with DB_DSN env
+
+jwt:
+  secret: "ruyi-ai-admin-secret-change-me"
+  expire_hours: 24
+
+ai:
+  # provider: "mock" uses built-in canned responses (works with no API key)
+  # provider: "openai" calls any OpenAI-compatible /v1/chat/completions endpoint
+  provider: "mock"
+  base_url: "https://api.openai.com/v1"
+  api_key: ""                 # set via env AI_API_KEY in production
+  model: "gpt-4o-mini"
+  max_tokens: 1024
+  temperature: 0.7
+
+cors:
+  allow_origins:
+    - "*"
