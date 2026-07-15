@@ -10,6 +10,10 @@
   --ruyi-blur: 16px;
   --ruyi-radius: 14px;
   --ruyi-ease: cubic-bezier(0.22, 1, 0.36, 1);
+  /* CJK-safe font stack — applied globally so no text falls back to tofu */
+  --ruyi-font: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Hiragino Sans GB",
+    "Source Han Sans SC", "WenQuanYi Micro Hei", -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 * {
@@ -22,11 +26,13 @@ body,
   margin: 0;
   height: 100%;
   width: 100%;
+  font-family: var(--ruyi-font);
 }
 
 body {
   background: var(--ruyi-canvas-deep);
   color: var(--ruyi-text);
+  font-family: var(--ruyi-font);
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow: hidden; /* shell owns scrolling */

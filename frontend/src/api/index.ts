@@ -26,6 +26,10 @@ export const documentsApi = {
     http.get<{ items: Document[]; total: number }>('/documents', { params: { page, size } }).then((r) => r.data),
 }
 
+export const systemApi = {
+  health: () => http.get<{ status: string; ai_provider: string }>('/health').then((r) => r.data),
+}
+
 export const aiApi = {
   chat: (messages: { role: string; content: string }[]) =>
     http.post<{ answer: string }>('/ai/chat', { messages }).then((r) => r.data),
